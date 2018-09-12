@@ -6,10 +6,10 @@ use Ghlin\DingtalkEapp\Util\Http;
 
 class DingtalkEapp {
     
-    public static function getCorpToken($authCorpId) {
+    public function getCorpToken($authCorpId) {
         $suiteKey = config('dingtalkeapp.suite_key');
         $timeStamp = time() * 1000;
-        $suiteTicket = getSuiteTicket($suiteKey);
+        $suiteTicket = $this->getSuiteTicket($suiteKey);
         $msg = $timeStamp."\n".$suiteTicket;
         $sha = urlencode(base64_encode(hash_hmac('sha256', $msg, $suiteKey, true)));
         $res = Http::post("/service/get_corp_token",
@@ -24,7 +24,7 @@ class DingtalkEapp {
         return $res;
     }
     
-    public static function getUserInfo($accessToken, $code) {
+    public function getUserInfo($accessToken, $code) {
         $res = Http::get("/user/getuserinfo",
             array(
                 "access_token" => $accessToken,
@@ -33,7 +33,7 @@ class DingtalkEapp {
         return $res;
     }
     
-    public static function getSuiteTicket($suiteKey) {
+    public function getSuiteTicket($suiteKey) {
         return 'temp_suite_ticket_only4_test';
     }
 }
