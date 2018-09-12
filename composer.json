@@ -1,0 +1,21 @@
+{
+    "name": "ghlin/dingtalkeapp",
+    "description": "dingtalkeapp",
+    "authors": [
+        {
+            "name": "ghlin",
+            "email": "huilin_guo@126.com"
+        }
+    ],
+    "require": {
+        "nategood/httpful": "*"
+    },
+	"autoload" : {
+		"psr-4" : {
+        	"Ghlin\\DingtalkEapp\\": "src/"
+		}
+	}
+    
+    
+    
+}
