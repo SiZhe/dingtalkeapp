@@ -6,6 +6,7 @@
 		"dingtalk",
 		"ghlin"
 	],
+	"license" : "MIT",
     "authors": [
         {
             "name": "ghlin",
@@ -20,6 +21,6 @@
         	"Ghlin\\DingtalkEapp\\": "src/"
 		}
 	},
-	"prefer-stable": true,
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+	"prefer-stable": true
 }
