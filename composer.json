@@ -1,6 +1,11 @@
 {
     "name": "ghlin/dingtalkeapp",
-    "description": "dingtalkeapp",
+    "description": "钉钉E应用免登流程整合",
+    "keywords" : [
+		"dingding",
+		"dingtalk",
+		"ghlin"
+	],
     "authors": [
         {
             "name": "ghlin",
@@ -14,8 +19,7 @@
 		"psr-4" : {
         	"Ghlin\\DingtalkEapp\\": "src/"
 		}
-	}
-    
-    
-    
+	},
+	"prefer-stable": true,
+    "minimum-stability": "dev",
 }
