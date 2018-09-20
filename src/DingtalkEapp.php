@@ -72,7 +72,7 @@ class DingtalkEapp {
         return 'temp_suite_ticket_only4_test';
     }
     
-    public function DecryptMsg($signature, $timeStamp, $nonce, $postdata, &$decryptMsg) {
+    public function DecryptMsg($signature, $timeStamp, $nonce, $postdata) {
         $postList = json_decode($postdata,true);
         $encrypt = $postList['encrypt'];
         
@@ -81,7 +81,7 @@ class DingtalkEapp {
         return $errCode;
     }
     
-    public function EncryptMsg($res, $timeStamp, $nonce, $encryptMsg) {
+    public function EncryptMsg($res, $timeStamp, $nonce) {
         $crypt = new DingtalkCrypt($this->token, $this->encodingAesKey, $this->suiteKey);
         $errCode = $crypt->EncryptMsg($res, $timeStamp, $nonce, $encryptMsg);
         return $errCode;
