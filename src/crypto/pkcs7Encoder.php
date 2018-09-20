@@ -61,11 +61,9 @@ class Prpcrypt
 
 	public function decrypt($encrypted, $corpid)
 	{
-
 		try {
 		    $iv = substr($this->key, 0, 16);
 		    $decrypted = openssl_decrypt($encrypted, 'AES-256-CBC', substr($this->key, 0, 32), OPENSSL_ZERO_PADDING, $iv);
-		    
 		} catch (\Exception $e) {
 			return array(ErrorCode::$DecryptAESError, null);
 		}
@@ -74,10 +72,8 @@ class Prpcrypt
 		    
 			$pkc_encoder = new PKCS7Encoder;
 			$result = $pkc_encoder->decode($decrypted);
-			dd($result);
 			if (strlen($result) < 16)
 				return "";
-				
 			$content = substr($result, 16, strlen($result));
 			$len_list = unpack("N", substr($content, 0, 4));
 			$xml_len = $len_list[1];
