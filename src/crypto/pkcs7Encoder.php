@@ -51,7 +51,7 @@ class Prpcrypt
 		    $iv = substr($this->key, 0, 16);
 		    $pkc_encoder = new PKCS7Encoder;
 		    $text = $pkc_encoder->encode($text);
-		    $encrypted = openssl_encrypt($text,'AES-128-CBC', $this->key, 0, $iv);
+		    $encrypted = openssl_encrypt($text, 'AES-256-CBC', substr($this->key, 0, 32), OPENSSL_ZERO_PADDING, $iv);
 			return array(ErrorCode::$OK, $encrypted);
 		} catch (\Exception $e) {
 			print $e;
@@ -64,16 +64,20 @@ class Prpcrypt
 
 		try {
 		    $iv = substr($this->key, 0, 16);
-		    $decrypted = openssl_decrypt($encrypted, 'AES-128-CBC', $this->key, 0, $iv);
+		    $decrypted = openssl_decrypt($encrypted, 'AES-256-CBC', substr($this->key, 0, 32), OPENSSL_ZERO_PADDING, $iv);
+		    
 		} catch (\Exception $e) {
 			return array(ErrorCode::$DecryptAESError, null);
 		}
 
 		try {
+		    
 			$pkc_encoder = new PKCS7Encoder;
 			$result = $pkc_encoder->decode($decrypted);
+			dd($result);
 			if (strlen($result) < 16)
 				return "";
+				
 			$content = substr($result, 16, strlen($result));
 			$len_list = unpack("N", substr($content, 0, 4));
 			$xml_len = $len_list[1];
