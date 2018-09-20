@@ -77,13 +77,13 @@ class DingtalkEapp {
         $encrypt = $postList['encrypt'];
         
         $crypt = new DingtalkCrypt($this->token, $this->encodingAesKey, $this->suiteKey);
-        $errCode = $crypt->DecryptMsg($signature, $timeStamp, $nonce, $encrypt, $decryptMsg);
+        $errCode = $crypt->DecryptMsg($signature, $timeStamp, $nonce, $encrypt);
         return $errCode;
     }
     
     public function EncryptMsg($res, $timeStamp, $nonce) {
         $crypt = new DingtalkCrypt($this->token, $this->encodingAesKey, $this->suiteKey);
-        $errCode = $crypt->EncryptMsg($res, $timeStamp, $nonce, $encryptMsg);
+        $errCode = $crypt->EncryptMsg($res, $timeStamp, $nonce);
         return $errCode;
     }
     
