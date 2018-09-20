@@ -8,7 +8,7 @@ class DingtalkCrypt
 	private $m_encodingAesKey;
 	private $m_suiteKey;
 
-	public function DingtalkCrypt($token, $encodingAesKey, $suiteKey)
+	public function __construct($token, $encodingAesKey, $suiteKey)
 	{
 		$this->m_token = $token;
 		$this->m_encodingAesKey = $encodingAesKey;
@@ -53,7 +53,6 @@ class DingtalkCrypt
 		if (strlen($this->m_encodingAesKey) != 43) {
 			return ErrorCode::$IllegalAesKey;
 		}
-
 		$pc = new Prpcrypt($this->m_encodingAesKey);
 
 		if ($timeStamp == null) {
@@ -63,7 +62,7 @@ class DingtalkCrypt
 		$sha1 = new SHA1;
 		$array = $sha1->getSHA1($this->m_token, $timeStamp, $nonce, $encrypt);
 		$ret = $array[0];
-
+		
 		if ($ret != 0) {
 			return $ret;
 		}
@@ -72,7 +71,7 @@ class DingtalkCrypt
 		if ($verifySignature != $signature) {
 			return ErrorCode::$ValidateSignatureError;
 		}
-
+        
 		$result = $pc->decrypt($encrypt, $this->m_suiteKey);
 		if ($result[0] != 0) {
 			return $result[0];

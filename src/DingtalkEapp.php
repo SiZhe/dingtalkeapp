@@ -9,10 +9,14 @@ class DingtalkEapp {
     
     private $suiteKey;
     private $suiteSecret;
+    private $token;
+    private $encodingAesKey;
 
     public function __construct() {
-        $this->suiteKey = config('dingtalkeapp.suite_key');
         $this->suiteSecret = config('dingtalkeapp.suite_secret');
+        $this->token = config('dingtalkeapp.token');
+        $this->encodingAesKey = config('dingtalkeapp.encoding_aes_key');
+        $this->suiteKey = config('dingtalkeapp.suite_key');
     }
     
     public function getCorpToken($authCorpId) {
@@ -68,23 +72,17 @@ class DingtalkEapp {
         return 'temp_suite_ticket_only4_test';
     }
     
-    public function DecryptMsg($signature, $timeStamp, $nonce, $postdata, $decryptMsg) {
-        $token = config('dingtalkeapp.dingdong');
-        $encodingAesKey = config('dingtalkeapp.encoding_aes_key');
-        $suiteKey = config('dingtalkeapp.suite_key');
+    public function DecryptMsg($signature, $timeStamp, $nonce, $postdata, &$decryptMsg) {
         $postList = json_decode($postdata,true);
         $encrypt = $postList['encrypt'];
-
-        $crypt = new DingtalkCrypt($token, $encodingAesKey, $suiteKey);
+        
+        $crypt = new DingtalkCrypt($this->token, $this->encodingAesKey, $this->suiteKey);
         $errCode = $crypt->DecryptMsg($signature, $timeStamp, $nonce, $encrypt, $decryptMsg);
         return $errCode;
     }
     
     public function EncryptMsg($res, $timeStamp, $nonce, $encryptMsg) {
-        $token = config('dingtalkeapp.dingdong');
-        $encodingAesKey = config('dingtalkeapp.encoding_aes_key');
-        $suiteKey = config('dingtalkeapp.suite_key');
-        $crypt = new DingtalkCrypt($token, $encodingAesKey, $suiteKey);
+        $crypt = new DingtalkCrypt($this->token, $this->encodingAesKey, $this->suiteKey);
         $errCode = $crypt->EncryptMsg($res, $timeStamp, $nonce, $encryptMsg);
         return $errCode;
     }

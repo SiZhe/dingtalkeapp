@@ -8,7 +8,6 @@ class PKCS7Encoder
 
 	function encode($text)
 	{
-		$block_size = PKCS7Encoder::$block_size;
 		$text_length = strlen($text);
 		$amount_to_pad = PKCS7Encoder::$block_size - ($text_length % PKCS7Encoder::$block_size);
 		if ($amount_to_pad == 0) {
@@ -38,7 +37,7 @@ class Prpcrypt
 {
 	public $key;
 
-	function Prpcrypt($k)
+	function __construct($k)
 	{
 		$this->key = base64_decode($k . "=");
 	}
@@ -47,25 +46,13 @@ class Prpcrypt
 	{
 
 		try {
-			//获得16位随机字符串，填充到明文之前
-			$random = $this->getRandomStr();
-			$text = $random . pack("N", strlen($text)) . $text . $corpid;
-			// 网络字节序
-			$size = mcrypt_get_block_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
-			$module = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_CBC, '');
-			$iv = substr($this->key, 0, 16);
-			//使用自定义的填充方式对明文进行补位填充
-			$pkc_encoder = new PKCS7Encoder;
-			$text = $pkc_encoder->encode($text);
-			mcrypt_generic_init($module, $this->key, $iv);
-			//加密
-			$encrypted = mcrypt_generic($module, $text);
-			mcrypt_generic_deinit($module);
-			mcrypt_module_close($module);
-
-			//print(base64_encode($encrypted));
-			//使用BASE64对加密后的字符串进行编码
-			return array(ErrorCode::$OK, base64_encode($encrypted));
+		    $random = $this->getRandomStr();
+		    $text = $random . pack("N", strlen($text)) . $text . $corpid;
+		    $iv = substr($this->key, 0, 16);
+		    $pkc_encoder = new PKCS7Encoder;
+		    $text = $pkc_encoder->encode($text);
+		    $encrypted = openssl_encrypt($text,'AES-128-CBC', $this->key, 0, $iv);
+			return array(ErrorCode::$OK, $encrypted);
 		} catch (\Exception $e) {
 			print $e;
 			return array(ErrorCode::$EncryptAESError, null);
@@ -76,24 +63,15 @@ class Prpcrypt
 	{
 
 		try {
-			$ciphertext_dec = base64_decode($encrypted);
-			$module = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_CBC, '');
-			$iv = substr($this->key, 0, 16);
-			mcrypt_generic_init($module, $this->key, $iv);
-
-			$decrypted = mdecrypt_generic($module, $ciphertext_dec);
-			mcrypt_generic_deinit($module);
-			mcrypt_module_close($module);
+		    $iv = substr($this->key, 0, 16);
+		    $decrypted = openssl_decrypt($encrypted, 'AES-128-CBC', $this->key, 0, $iv);
 		} catch (\Exception $e) {
 			return array(ErrorCode::$DecryptAESError, null);
 		}
 
-
 		try {
-			//去除补位字符
 			$pkc_encoder = new PKCS7Encoder;
 			$result = $pkc_encoder->decode($decrypted);
-			//去除16位随机字符串,网络字节序和AppId
 			if (strlen($result) < 16)
 				return "";
 			$content = substr($result, 16, strlen($result));
@@ -113,7 +91,6 @@ class Prpcrypt
 
 	function getRandomStr()
 	{
-
 		$str = "";
 		$str_pol = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
 		$max = strlen($str_pol) - 1;
