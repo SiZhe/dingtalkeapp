@@ -15,7 +15,7 @@ class DingtalkCrypt
 		$this->m_suiteKey = $suiteKey;
 	}
     
-	public function EncryptMsg($plain, $timeStamp, $nonce, &$encryptMsg)
+	public function EncryptMsg($plain, $timeStamp, $nonce)
 	{
 		$pc = new Prpcrypt($this->m_encodingAesKey);
 
@@ -44,11 +44,14 @@ class DingtalkCrypt
 			"timeStamp" => $timeStamp,
 			"nonce" => $nonce
 		));
-		return ErrorCode::$OK;
+		return [
+		    'code' => ErrorCode::$OK, 
+		    'msg' => $encryptMsg
+		];
 	}
 
 
-	public function DecryptMsg($signature, $timeStamp = null, $nonce, $encrypt, &$decryptMsg)
+	public function DecryptMsg($signature, $timeStamp = null, $nonce, $encrypt)
 	{
 		if (strlen($this->m_encodingAesKey) != 43) {
 			return ErrorCode::$IllegalAesKey;
@@ -78,7 +81,10 @@ class DingtalkCrypt
 		}
 		$decryptMsg = $result[1];
 
-		return ErrorCode::$OK;
+		return [
+		    'code' => ErrorCode::$OK,
+		    'msg' => $decryptMsg
+		];
 	}
 
 }
