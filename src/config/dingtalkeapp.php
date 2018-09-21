@@ -1,6 +1,6 @@
 <?php
 return [
-    'dir_root' => storage_path('/dingtalkeapp'),
+    'dir_root' => storage_path('/logs'),
     'oapi_host' => "https://oapi.dingtalk.com",
     //Suite
     'suite_key' => 'suitesb9wz5nlwp4yrd7w',
