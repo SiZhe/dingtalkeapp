@@ -69,7 +69,7 @@ class DingtalkEapp {
     }
     
     public function getSuiteTicket($suiteKey) {
-        return 'temp_suite_ticket_only4_test';
+        return file_get_contents(realpath(base_path('resources')).'/views/vendor/dingtalk/suite_ticket.txt');
     }
     
     public function DecryptMsg($signature, $timeStamp, $nonce, $postdata) {

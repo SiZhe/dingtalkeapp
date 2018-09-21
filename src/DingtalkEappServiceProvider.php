@@ -15,9 +15,8 @@ class DingtalkEappServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__.'/config/dingtalkeapp.php' => config_path('dingtalkeapp.php'), // 发布配置文件到 laravel 的config 下
-        ]);
+        $this->publishes([__DIR__.'/config/dingtalkeapp.php' => config_path('dingtalkeapp.php')]);
+        $this->publishes([realpath (__DIR__ . '/views') => base_path ('resources/views/vendor/dingtalk')], 'view');
     }
 
     /**
