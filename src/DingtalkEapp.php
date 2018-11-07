@@ -74,8 +74,8 @@ class DingtalkEapp {
 
     public function getUserInfoByCode($authCode) {
         $timeStamp = time() * 1000;
-        $msg = $timeStamp."\n".$this->appSecret;
-        $sha = urlencode(base64_encode(hash_hmac('sha256', $msg, $this->suiteSecret, true)));
+        $msg = $timeStamp;
+        $sha = urlencode(base64_encode(hash_hmac('sha256', $msg, $this->appSecret, true)));
         $res = Http::post("/sns/getuserinfo_bycode",
             array(
                 "accessKey" => $this->appId,
