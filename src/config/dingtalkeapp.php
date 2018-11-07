@@ -2,9 +2,12 @@
 return [
     'dir_root' => storage_path('/logs'),
     'oapi_host' => "https://oapi.dingtalk.com",
-    //Suite
-    'suite_key' => 'suitesb9wz5nlwp4yrd7w',
-    'suite_secret' => 'MJXcn2cg32fyeLP3gX1cIVoWrw_IfZg0254bbai3eBt5Z2eEROqtXaQ8A01Q50Fl',
-    'token' => 'dingdong',
-    'encoding_aes_key' => 'hd7wr7l81nf375wdqczjofaz9aad07u77x78q2dzdwv'
+    //第三方企业应用参数
+    'suite_key' => 'YOUR SUITE KEY',
+    'suite_secret' => 'YOUR SUITE SECRET',
+    'token' => 'YOUR TOKEN',
+    'encoding_aes_key' => 'YOUR ENCODING AES KEY',
+    //第三方个人应用参数
+    'app_id' => 'YOUR APP ID',
+    'app_secret' => 'YOUR APP SECRET'
 ];
